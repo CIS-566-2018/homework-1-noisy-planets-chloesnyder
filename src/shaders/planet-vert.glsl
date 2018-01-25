@@ -168,8 +168,6 @@ float mountainFbm(vec3 x, int octaves)
 
     for(int i = 0; i < octaves; ++i)
     {
-        //float freq = pow(1.5, float(i));
-       // float amp = pow(persistence, float(i));
         total += amplitude * mountainNoise(x * frequency); // 3D value noise function
         maxPossible += amplitude;
         amplitude *= persistence;
@@ -177,10 +175,10 @@ float mountainFbm(vec3 x, int octaves)
     }
     
     // remap so that there is randomness within the worley noise
-    // f1 = distance of this vert from closest worley nosie point. Keeps the continent edges from jagging up too much
+    // f1 = distance of this vert from closest worley noise point. Keeps the continent edges from jagging up too much
     // f2 = noise
     float f1 = 1.0 - minDist;
-    float f2 = 1.0 - (total / maxPossible); // normalize result of fb (maybe need to do 1 - total / maxPosssible)
+    float f2 = 1.0 - (total / maxPossible); // normalize result of fbm 
     float f3 = max(0.0, (f1 - f2) / (1.0 - f2));
     f3 = mix(f3, 1.0 - f2, 0.5);
     return 3.0 * f3;
@@ -360,7 +358,6 @@ float biomes(vec3 c)
     || all(lessThan(abs(c) - gray, vec3(epsilon))))
     {
         isWater = 1.0;
-        float time = 40.0 + pow(u_Time, .5);
         t = fbm(vs_Pos.yz);
         fs_Col = vec4(bluePalette(t),1.0);
         return t;

@@ -23,27 +23,31 @@ Exact usages are cited in code comments
 - [RGB Color picker](https://www.rapidtables.com/web/color/RGB_Color.html)
 
 
-## Submission
-Commit and push to Github, then submit a link to your commit on Canvas.
+## Explanation of controls
+- Light_x, light_y, light_z = move light position
+- Tectonic plates = changes scalar value of worley noise grid used to generate continents and oceans.
+- Rotation Speed = speed up or slow down rotation of planet and moon around planet (moon always orbits planet at 1/27th the speed of the planet in order to simulate lunar month)
+- Animate = Uncheck this to stop rotation
+- Clouds = uncheck this to turn atmosphere off and just look at the planet
 
-For this assignment, and for all future assignments, modify this README file
-so that it contains the following information:
-- Your name and PennKey
-- Citation of any external resources you found helpful when implementing this
-assignment.
-- A link to your live github.io demo (we'll talk about how to get this set up
-in class some time before the assignment is due)
-- At least one screenshot of your planet
-- An explanation of the techniques you used to generate your planet features.
-Please be as detailed as you can; not only will this help you explain your work
-to recruiters, but it helps us understand your project when we grade it!
+## Explanation of Techniques
 
-## Extra Credit
-- Use a 4D noise function to modify the terrain over time, where time is the
-fourth dimension that is updated each frame. A 3D function will work, too, but
-the change in noise will look more "directional" than if you use 4D.
-- Use music to animate aspects of your planet's terrain (e.g. mountain height,
-brightness of emissive areas, water levels, etc.)
-- Create a background for your planet using a raytraced sky box that includes
-things like the sun, stars, or even nebulae.
+- Planet:
+    - The planet is generated from worley noise, perlin noise, value noise and a simple hash function
+    - Worley noise: 3D worley noise is used to generate "tectonic plates". A 3D grid is created from (-1,1) in 3 dimensions. The user controls the scalar value of the grid from "tectonic plates" on the GUI. The worley noise function takes in a vertex and determines the closest grid cell to this vertex, and how far the vertex is from the cell (the minimum distance). Temporarily, the coordinate of the closest grid cell used to color the vertex via the colorize function. The result is a voronoi-esque sphere diagram. These colors are overwritten in the biome function. minDist is saved as a global value for later use.
+    - The biomes function checks what "color" the vertex is in order to determine whether this vertex falls in a mountain, ocean, or forest biome. Each biome uses noise to compute a t value by which the vertex position is displaced along its normal.
+    - Forest biome: The forest biome calculates displacement by using a simple hash function and noise function. The fragment is recolored using the function greenPalette;
+    - Mountain biome: The mountain biome uses an fbm of a 3D value noise function to calculate displacement. Displacement is remapped within worley noise using the minimum distance in order to avoid jagged continent edges. The fragment is recolored using the function winterPalette;
+    - Ocean biome: The ocean biome uses a lower frequency fbm. A float isWater is set to true and the fragment shader calculates blinn-phong specular highlight for water only.
+- Moon:
+    - 50 points are uniformly sampled on the sphere to represent craters
+    - Noise is used to calculate theta and phi offsets to introduce randomness to the sampling
+    - A radius is generated for each point by interpolating between the theta offset and phi offset. The radius is updated later to add some "noise" based on the distance from the vertex to each of the sphere samples in order to generate non-uniform craters (i.e., craters are not all perfect circles)
+    - Crater depth is created using a sin curve to displace the vertex along its normal if the vertex falls within the noisey radius
+    - A slight peak is calculated if the vertex falls between the radius and the radius + some threshold
+    - The moon rotates around the planet at 1/27th the speed of the planet's rotation. The moon rotates about its own axis at this speed as well.  This is to simulate a lunar month to an earth day (It takes the moon 27 days to rotate the earth).
+- Atmosphere
+    - Clouds are created using 3D curl noise (which uses an fbm of Perlin Noise as an internal noise function) on the vertex shader
+    - 4D perlin noise is used in the fragment shader to generate alpha values that vary with time. This gives the effect of an initially very foggy planet that ebbs and flows as time goes on, so at times the entire planet is very foggy, at other times it's barely foggy (pausing animation but keeping clouds turned on will still animate the clouds).
+    
 

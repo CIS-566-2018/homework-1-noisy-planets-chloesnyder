@@ -128,7 +128,7 @@ void main()
     displacement = 0.f;
     for(int i = 0; i < numCircles; i++)
     {
-        // To create crater depth,use a sin curve to displace the vertex along it's normal by some   
+        // To create crater depth,use a sin curve to displace the vertex along its normal  
         float dist = distance(pos.xyz, samples[i]);
         float cx = pos.x + dist * sin(pos.z / 5.f);
         float cy = pos.y + dist * sin(pos.z / 3.f);
