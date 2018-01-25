@@ -12,15 +12,15 @@ assignment:
 ![](planet2.png)
 ![](moon.png)
 
-##External Resources
+## External Resources
 Exact usages are cited in code comments
 - [Curl Noise](https://petewerner.blogspot.com/2015/02/intro-to-curl-noise.html)
 - [GPU Gems Chapter on Perlin Noise](http://developer.download.nvidia.com/books/HTML/gpugems/gpugems_ch05.html)
 - [Worley Noise Implementations](https://thebookofshaders.com/12/)
--[Some noise functions taken from/modified from shadertoy](https://www.shadertoy.com/view/4dS3Wd)
--[Value noise](http://www.iquilezles.org/www/articles/morenoise/morenoise.htm)
--[Modified an FBM from here](https://shaderfrog.com/app/editor)
--[RGB Color picker](https://www.rapidtables.com/web/color/RGB_Color.html)
+- [Some noise functions taken from/modified from shadertoy](https://www.shadertoy.com/view/4dS3Wd)
+- [Value noise](http://www.iquilezles.org/www/articles/morenoise/morenoise.htm)
+- [Modified an FBM from here](https://shaderfrog.com/app/editor)
+- [RGB Color picker](https://www.rapidtables.com/web/color/RGB_Color.html)
 
 
 ## Submission
